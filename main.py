@@ -73,7 +73,25 @@ class Stock:
         conn.close()
         return inserted_id
 
-  
+    def get_user_stocks(owner_id):
+        stocks = []
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='stocks'")
+        result = cursor.fetchone()
+        if result is None:
+            conn.close()
+            return stocks
+        cursor.execute('SELECT * FROM stocks WHERE owner_id = ?', (owner_id,))
+        result = cursor.fetchall()
+        conn.close()
+
+        for row in result:
+            owner_id, stock_id, quantity, unit_price, purchase_date = row
+            stock = Stock(owner_id, stock_id, quantity, unit_price, purchase_date)
+            stocks.append(stock)
+
+        return stocks
 
 class CheckStockStates(StatesGroup):
     StockID = State()
