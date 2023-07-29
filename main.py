@@ -73,25 +73,7 @@ class Stock:
         conn.close()
         return inserted_id
 
-    def get_user_stocks(owner_id):
-        stocks = []
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='stocks'")
-        result = cursor.fetchone()
-        if result is None:
-            conn.close()
-            return stocks
-        cursor.execute('SELECT * FROM stocks WHERE owner_id = ?', (owner_id,))
-        result = cursor.fetchall()
-        conn.close()
-
-        for row in result:
-            owner_id, stock_id, quantity, unit_price, purchase_date = row
-            stock = Stock(owner_id, stock_id, quantity, unit_price, purchase_date)
-            stocks.append(stock)
-
-        return stocks
+  
 
 class CheckStockStates(StatesGroup):
     StockID = State()
@@ -225,7 +207,7 @@ async def add_stock_id(message: types.Message, state: FSMContext):
             await state.finish()
             await bot.send_message(message.chat.id, 'Информация о приобретенной ценной бумаге успешно сохранена!')
         except:
-             await message.reply('1Вы некорректно указали количество приобретенных единиц ценной бумаги.')
+             await message.reply('Вы некорректно указали количество приобретенных единиц ценной бумаги.')
              await bot.send_message(message.chat.id, 'Введите количество в виде целого числа или введите /stop для отмены"')
     
     else:
