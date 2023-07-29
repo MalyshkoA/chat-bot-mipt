@@ -230,7 +230,7 @@ async def add_stock_id(message: types.Message, state: FSMContext):
     
     else:
         await state.finish()
-        await message.reply('Добавление информации о приобретенной ценной бумаге отменено')
+        await message.reply('Добавл1ение информации о приобретенной ценной бумаге отменено')
 
 @dp.message_handler(Command('checkPortfolioSummary'))
 async def check_portfolio(message: types.Message):
