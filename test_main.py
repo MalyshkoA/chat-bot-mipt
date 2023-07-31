@@ -8,14 +8,14 @@ class UserTestCase(unittest.TestCase):
     test_user_id = 9999999999999
     
     def setUp(self):
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS users (telegram_id INTEGER PRIMARY KEY)')
         conn.commit()
         conn.close()
 
     def tearDown(self):
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('DELETE FROM users WHERE telegram_id = ?', (self.test_user_id,))
         conn.commit()
@@ -42,7 +42,7 @@ class StockTestCase(unittest.TestCase):
     test_stock = bot.Stock(test_user_id, 'AAPL', 10, 100, '2023-07-13 03:09:10.579702')
 
     def setUp(self):
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS users (telegram_id INTEGER PRIMARY KEY)')
         cursor.execute('CREATE TABLE IF NOT EXISTS stocks (owner_id INTEGER, stock_id TEXT, quantity INTEGER, unit_price REAL, purchase_date TIMESTAMP, FOREIGN KEY (owner_id) REFERENCES users(telegram_id) ON DELETE CASCADE)') 
@@ -50,7 +50,7 @@ class StockTestCase(unittest.TestCase):
         conn.close()
     
     def tearDown(self):
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('DELETE FROM users WHERE telegram_id = ?', (self.test_user_id,))
         cursor.execute('DELETE FROM stocks WHERE owner_id = ?', (self.test_user_id,))
@@ -59,7 +59,7 @@ class StockTestCase(unittest.TestCase):
     
     def test_add_stock(self):
         bot.Stock.add_stock(self.test_stock)
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM stocks WHERE owner_id = ?', (self.test_user_id,))
         result = cursor.fetchall()
