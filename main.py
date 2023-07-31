@@ -18,7 +18,7 @@ class User:
         self.telegram_id = telegram_id
 
     def check_user_data(self):
-        conn = sqlite3.connect('/app_data/database.db')
+        conn = sqlite3.connect('./app_data/database.db')
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
         result = cursor.fetchone()
@@ -33,7 +33,7 @@ class User:
     def create_user_record(self):
         inserted_id = None
         if not self.check_user_data():
-            conn = sqlite3.connect('/app_data/database.db')
+            conn = sqlite3.connect('./app_data/database.db')
             cursor = conn.cursor()
             cursor.execute('''CREATE TABLE IF NOT EXISTS users (telegram_id INTEGER PRIMARY KEY)''')
             cursor.execute('INSERT INTO users (telegram_id) VALUES (?)', (self.telegram_id,))
@@ -62,7 +62,7 @@ class Stock:
         return False
 
     def add_stock(self):
-        conn = sqlite3.connect('/app_data/database.db')
+        conn = sqlite3.connect('./app_data/database.db')
         cursor = conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS stocks
                           (owner_id INTEGER, stock_id TEXT, quantity INTEGER, unit_price REAL, purchase_date TIMESTAMP, FOREIGN KEY (owner_id) REFERENCES users(telegram_id) ON DELETE CASCADE)''')
@@ -75,7 +75,7 @@ class Stock:
 
     def get_user_stocks(owner_id):
         stocks = []
-        conn = sqlite3.connect('/app_data/database.db')
+        conn = sqlite3.connect('./app_data/database.db')
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='stocks'")
         result = cursor.fetchone()
@@ -225,7 +225,7 @@ async def add_stock_id(message: types.Message, state: FSMContext):
             await state.finish()
             await bot.send_message(message.chat.id, 'Информация о приобретенной ценной бумаге успешно сохранена!')
         except:
-             await message.reply('Вы некорректно указали количество приобретенных единиц ценной бумаги')
+             await message.reply('Вы некорректно указали количество приобретенных единиц ценной бумаги.')
              await bot.send_message(message.chat.id, 'Введите количество в виде целого числа или введите /stop для отмены"')
     
     else:
