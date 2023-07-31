@@ -225,7 +225,7 @@ async def add_stock_id(message: types.Message, state: FSMContext):
             await state.finish()
             await bot.send_message(message.chat.id, 'Информация о приобретенной ценной бумаге успешно сохранена!')
         except:
-             await message.reply('Вы некорректно указали количество приобретенных единиц ценной бумаги.')
+             await message.reply('Вы некорректно указали количество приобретенных единиц ценной бумаги')
              await bot.send_message(message.chat.id, 'Введите количество в виде целого числа или введите /stop для отмены"')
     
     else:
