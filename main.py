@@ -1,15 +1,20 @@
 import requests
 import yfinance
 import sqlite3
+import os
 from datetime import datetime
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from dotenv import load_dotenv
+load_dotenv()
 
-bot_token = '6071399225:AAERcfvL5jnnUGj5sQ9XBL8-zR1WPLS63Oc'  # Замените YOUR_BOT_TOKEN на фактический токен вашего бота
-bot = Bot(token=bot_token)
+
+api_token = os.getenv('API_TOKEN')
+print("api_token:", api_token)
+bot = Bot(token=api_token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
